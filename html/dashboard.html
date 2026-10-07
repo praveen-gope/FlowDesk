@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>FlowDesk CRM - Dashboard</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body data-page="Dashboard">
+<aside><div class="logo">FlowDesk</div><nav id="nav">
+<h6>MAIN MENU</h6>
+<a class="nv" data-p="Captured Leads" data-url="captured-leads.html" href="captured-leads.html"><i>+</i>Captured Leads</a>
+<a class="nv on" data-p="Dashboard" data-url="dashboard.html" href="dashboard.html">
+<i>▦</i>Dashboard</a>
+<a class="nv" data-p="Contacts" data-url="contacts.html" href="contacts.html">
+<i>☺</i>Contacts</a>
+<a class="nv" data-p="Companies" data-url="companies.html" href="companies.html">
+<i>▤</i>Companies</a>
+<a class="nv" data-p="Deals" data-url="deals.html" href="deals.html">
+<i>✦</i>Deals</a>
+<a class="nv" data-p="Tasks" data-url="tasks.html" href="tasks.html">
+<i>☑</i>Tasks</a>
+<a class="nv" data-p="Reports" data-url="reports.html" href="reports.html">
+<i>↗</i>Reports</a>
+<a class="nv" data-p="Calendar" data-url="calendar.html" href="calendar.html">
+<i>▣</i>Calendar</a>
+<h6>MARKETING</h6>
+<a class="nv" data-p="Products" data-url="products.html" href="products.html">
+<i>◈</i>Products</a>
+<a class="nv" data-p="Emails" data-url="emails.html" href="emails.html">
+<i>✉</i>Emails</a>
+<a class="nv" data-p="Invoices" data-url="invoices.html" href="invoices.html">
+<i>▥</i>Invoices</a>
+<h6>PREFERENCES</h6>
+<a class="nv" data-p="Support Tickets" data-url="support-tickets.html" href="support-tickets.html">Support Tickets</a>
+<a class="nv" data-p="Users & Teams" data-url="users.html" href="users.html">Users &amp; Teams</a>
+<a class="nv" data-p="Support Notes" data-url="support-notes.html" href="support-notes.html">Support Notes</a>
+<a class="nv" data-p="Documents" data-url="documents.html" href="documents.html">Documents</a>
+<a class="nv" data-p="Integrations" data-url="integrations.html" href="integrations.html">
+<i>⚙</i>Integrations</a>
+<a class="nv" data-p="Profile" data-url="profile.html" href="profile.html">
+<i>◉</i>Profile</a>
+<a class="nv" data-p="Settings" data-url="settings.html" href="settings.html">
+<i>⚒</i>Settings</a>
+<a class="nv" data-p="Notifications" data-url="notifications.html" href="notifications.html">
+<i>🔔</i>Notifications</a>
+<h6>DETAIL PAGES</h6>
+<a class="nv" data-p="Company detail" data-url="company-detail.html" href="company-detail.html">
+<i>▤</i>Company detail</a>
+<a class="nv" data-p="Deal detail" data-url="deal-detail.html" href="deal-detail.html">
+<i>✦</i>Deal detail</a>
+<a class="nv" data-p="Product detail" data-url="product-detail.html" href="product-detail.html">
+<i>◈</i>Product detail</a>
+<a class="nv" data-p="Edit contact" data-url="edit-contact.html" href="edit-contact.html">
+<i>✎</i>Edit contact</a>
+<a class="nv" data-p="Explore integrations" data-url="explore-integrations.html" href="explore-integrations.html">
+<i>⌖</i>Explore integrations</a>
+<a class="nv" data-p="Import CSV" data-url="import-csv.html" href="import-csv.html">
+<i>⇪</i>Import CSV</a>
+<h6>CREATE</h6>
+<a class="nv" data-p="Add contact" data-url="add-contact.html" href="add-contact.html">
+<i>＋</i>Add contact</a>
+<a class="nv" data-p="Add company" data-url="add-company.html" href="add-company.html">
+<i>＋</i>Add company</a>
+<a class="nv" data-p="Add deal" data-url="add-deal.html" href="add-deal.html">
+<i>＋</i>Add deal</a>
+<a class="nv" data-p="Add product" data-url="add-product.html" href="add-product.html">
+<i>＋</i>Add product</a>
+<a class="nv" data-p="Add task" data-url="add-task.html" href="add-task.html">
+<i>＋</i>Add task</a>
+<h6>AUTH</h6>
+<a class="nv" data-p="Sign in" data-url="sign-in.html" href="sign-in.html">
+<i>→</i>Sign in</a>
+<a class="nv" data-p="Sign up" data-url="sign-up.html" href="sign-up.html">
+<i>☺</i>Sign up</a>
+<a class="nv" data-p="Forgot password" data-url="forgot-password.html" href="forgot-password.html">
+<i>?</i>Forgot password</a>
+<a class="nv" data-p="OTP verification" data-url="otp-verification.html" href="otp-verification.html">
+<i>✓</i>OTP verification</a>
+<a class="nv" data-p="New password" data-url="new-password.html" href="new-password.html">
+<i>🔑</i>New password</a>
+</nav><div class="me"><span class="av" style="background:#4f7f96;width:36px;height:36px">PG</span><div><b>Praveen Gope</b><small>kr.praveengope@gmail.com</small></div></div></aside>
+<main><header><h1 id="ti">Dashboard</h1><div class="bar" style="margin:0"><button class="b ic">🔔</button><select class="b" id="th"><option value="system">◐ System</option><option value="light">☀ Light</option><option value="dark">☾ Dark</option></select></div></header><div id="v">
+<!-- Edit this page's headings, labels, and content below. -->
+<div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:18px">
+<div class="tabs" style="margin:0">
+<span class="on">Overview</span>
+<span>Sales</span>
+<span>Order</span>
+<span>Report</span>
+</div>
+<div class="bar" style="margin:0">
+<button class="b">⚟ Filter</button>
+<button class="b p">⭳ Export all</button>
+</div>
+</div>
+<div class="g g3">
+<div class="card">
+<div style="display:flex;justify-content:space-between;align-items:center">
+<span class="mu">
+<span class="ico" style="--c:#7FA6B8">$</span> Total sales</span>
+<span class="mu">⋮</span>
+</div>
+<div class="big">$28.500 <span class="pl n" style="--c:#5fae9a">↑ 10.2%</span>
+</div>
+<svg viewBox="0 0 200 50" width="100%" height="70" preserveAspectRatio="none">
+<rect class="bb" style="--i:0" x="0" y="42" width="7" height="8" rx="1.5" fill="#7FA6B8" opacity="0.3"/>
+<rect class="bb" style="--i:1" x="10" y="40" width="7" height="10" rx="1.5" fill="#7FA6B8" opacity="0.33499999999999996"/>
+<rect class="bb" style="--i:2" x="20" y="38" width="7" height="12" rx="1.5" fill="#7FA6B8" opacity="0.37"/>
+<rect class="bb" style="--i:3" x="30" y="36" width="7" height="14" rx="1.5" fill="#7FA6B8" opacity="0.405"/>
+<rect class="bb" style="--i:4" x="40" y="34" width="7" height="16" rx="1.5" fill="#7FA6B8" opacity="0.44"/>
+<rect class="bb" style="--i:5" x="50" y="32" width="7" height="18" rx="1.5" fill="#7FA6B8" opacity="0.475"/>
+<rect class="bb" style="--i:6" x="60" y="30" width="7" height="20" rx="1.5" fill="#7FA6B8" opacity="0.51"/>
+<rect class="bb" style="--i:7" x="70" y="28" width="7" height="22" rx="1.5" fill="#7FA6B8" opacity="0.545"/>
+<rect class="bb" style="--i:8" x="80" y="26" width="7" height="24" rx="1.5" fill="#7FA6B8" opacity="0.5800000000000001"/>
+<rect class="bb" style="--i:9" x="90" y="24" width="7" height="26" rx="1.5" fill="#7FA6B8" opacity="0.615"/>
+<rect class="bb" style="--i:10" x="100" y="22" width="7" height="28" rx="1.5" fill="#7FA6B8" opacity="0.65"/>
+<rect class="bb" style="--i:11" x="110" y="20" width="7" height="30" rx="1.5" fill="#7FA6B8" opacity="0.685"/>
+<rect class="bb" style="--i:12" x="120" y="18" width="7" height="32" rx="1.5" fill="#7FA6B8" opacity="0.72"/>
+<rect class="bb" style="--i:13" x="130" y="16" width="7" height="34" rx="1.5" fill="#7FA6B8" opacity="0.7550000000000001"/>
+<rect class="bb" style="--i:14" x="140" y="14" width="7" height="36" rx="1.5" fill="#7FA6B8" opacity="0.79"/>
+<rect class="bb" style="--i:15" x="150" y="12" width="7" height="38" rx="1.5" fill="#7FA6B8" opacity="0.825"/>
+<rect class="bb" style="--i:16" x="160" y="10" width="7" height="40" rx="1.5" fill="#7FA6B8" opacity="0.8600000000000001"/>
+<rect class="bb" style="--i:17" x="170" y="8" width="7" height="42" rx="1.5" fill="#7FA6B8" opacity="0.895"/>
+<rect class="bb" style="--i:18" x="180" y="6" width="7" height="44" rx="1.5" fill="#7FA6B8" opacity="0.9300000000000002"/>
+<rect class="bb" style="--i:19" x="190" y="4" width="7" height="46" rx="1.5" fill="#7FA6B8" opacity="0.9650000000000001"/>
+</svg>
+<span class="mu">VS last week</span>
+</div>
+<div class="card">
+<div style="display:flex;justify-content:space-between;align-items:center">
+<span class="mu">
+<span class="ico" style="--c:#c9a46a">▣</span> Operating expenses</span>
+<span class="mu">⋮</span>
+</div>
+<div class="big">$18.200 <span class="pl n" style="--c:#c96a6a">↓ 5.75%</span>
+</div>
+<svg viewBox="0 0 200 50" width="100%" height="70" preserveAspectRatio="none">
+<rect class="bb" style="--i:0" x="0" y="42" width="7" height="8" rx="1.5" fill="#c9a46a" opacity="0.3"/>
+<rect class="bb" style="--i:1" x="10" y="40" width="7" height="10" rx="1.5" fill="#c9a46a" opacity="0.33499999999999996"/>
+<rect class="bb" style="--i:2" x="20" y="38" width="7" height="12" rx="1.5" fill="#c9a46a" opacity="0.37"/>
+<rect class="bb" style="--i:3" x="30" y="36" width="7" height="14" rx="1.5" fill="#c9a46a" opacity="0.405"/>
+<rect class="bb" style="--i:4" x="40" y="34" width="7" height="16" rx="1.5" fill="#c9a46a" opacity="0.44"/>
+<rect class="bb" style="--i:5" x="50" y="32" width="7" height="18" rx="1.5" fill="#c9a46a" opacity="0.475"/>
+<rect class="bb" style="--i:6" x="60" y="30" width="7" height="20" rx="1.5" fill="#c9a46a" opacity="0.51"/>
+<rect class="bb" style="--i:7" x="70" y="28" width="7" height="22" rx="1.5" fill="#c9a46a" opacity="0.545"/>
+<rect class="bb" style="--i:8" x="80" y="26" width="7" height="24" rx="1.5" fill="#c9a46a" opacity="0.5800000000000001"/>
+<rect class="bb" style="--i:9" x="90" y="24" width="7" height="26" rx="1.5" fill="#c9a46a" opacity="0.615"/>
+<rect class="bb" style="--i:10" x="100" y="22" width="7" height="28" rx="1.5" fill="#c9a46a" opacity="0.65"/>
+<rect class="bb" style="--i:11" x="110" y="20" width="7" height="30" rx="1.5" fill="#c9a46a" opacity="0.685"/>
+<rect class="bb" style="--i:12" x="120" y="18" width="7" height="32" rx="1.5" fill="#c9a46a" opacity="0.72"/>
+<rect class="bb" style="--i:13" x="130" y="16" width="7" height="34" rx="1.5" fill="#c9a46a" opacity="0.7550000000000001"/>
+<rect class="bb" style="--i:14" x="140" y="14" width="7" height="36" rx="1.5" fill="#c9a46a" opacity="0.79"/>
+<rect class="bb" style="--i:15" x="150" y="12" width="7" height="38" rx="1.5" fill="#c9a46a" opacity="0.825"/>
+<rect class="bb" style="--i:16" x="160" y="10" width="7" height="40" rx="1.5" fill="#c9a46a" opacity="0.8600000000000001"/>
+<rect class="bb" style="--i:17" x="170" y="8" width="7" height="42" rx="1.5" fill="#c9a46a" opacity="0.895"/>
+<rect class="bb" style="--i:18" x="180" y="6" width="7" height="44" rx="1.5" fill="#c9a46a" opacity="0.9300000000000002"/>
+<rect class="bb" style="--i:19" x="190" y="4" width="7" height="46" rx="1.5" fill="#c9a46a" opacity="0.9650000000000001"/>
+</svg>
+<span class="mu">VS last week</span>
+</div>
+<div class="card">
+<div style="display:flex;justify-content:space-between;align-items:center">
+<span class="mu">
+<span class="ico" style="--c:#5fae9a">↗</span> Gross profit</span>
+<span class="mu">⋮</span>
+</div>
+<div class="big">$22.500 <span class="pl n" style="--c:#5fae9a">↑ 8.55%</span>
+</div>
+<svg viewBox="0 0 200 50" width="100%" height="70" preserveAspectRatio="none">
+<rect class="bb" style="--i:0" x="0" y="42" width="7" height="8" rx="1.5" fill="#5fae9a" opacity="0.3"/>
+<rect class="bb" style="--i:1" x="10" y="40" width="7" height="10" rx="1.5" fill="#5fae9a" opacity="0.33499999999999996"/>
+<rect class="bb" style="--i:2" x="20" y="38" width="7" height="12" rx="1.5" fill="#5fae9a" opacity="0.37"/>
+<rect class="bb" style="--i:3" x="30" y="36" width="7" height="14" rx="1.5" fill="#5fae9a" opacity="0.405"/>
+<rect class="bb" style="--i:4" x="40" y="34" width="7" height="16" rx="1.5" fill="#5fae9a" opacity="0.44"/>
+<rect class="bb" style="--i:5" x="50" y="32" width="7" height="18" rx="1.5" fill="#5fae9a" opacity="0.475"/>
+<rect class="bb" style="--i:6" x="60" y="30" width="7" height="20" rx="1.5" fill="#5fae9a" opacity="0.51"/>
+<rect class="bb" style="--i:7" x="70" y="28" width="7" height="22" rx="1.5" fill="#5fae9a" opacity="0.545"/>
+<rect class="bb" style="--i:8" x="80" y="26" width="7" height="24" rx="1.5" fill="#5fae9a" opacity="0.5800000000000001"/>
+<rect class="bb" style="--i:9" x="90" y="24" width="7" height="26" rx="1.5" fill="#5fae9a" opacity="0.615"/>
+<rect class="bb" style="--i:10" x="100" y="22" width="7" height="28" rx="1.5" fill="#5fae9a" opacity="0.65"/>
+<rect class="bb" style="--i:11" x="110" y="20" width="7" height="30" rx="1.5" fill="#5fae9a" opacity="0.685"/>
+<rect class="bb" style="--i:12" x="120" y="18" width="7" height="32" rx="1.5" fill="#5fae9a" opacity="0.72"/>
+<rect class="bb" style="--i:13" x="130" y="16" width="7" height="34" rx="1.5" fill="#5fae9a" opacity="0.7550000000000001"/>
+<rect class="bb" style="--i:14" x="140" y="14" width="7" height="36" rx="1.5" fill="#5fae9a" opacity="0.79"/>
+<rect class="bb" style="--i:15" x="150" y="12" width="7" height="38" rx="1.5" fill="#5fae9a" opacity="0.825"/>
+<rect class="bb" style="--i:16" x="160" y="10" width="7" height="40" rx="1.5" fill="#5fae9a" opacity="0.8600000000000001"/>
+<rect class="bb" style="--i:17" x="170" y="8" width="7" height="42" rx="1.5" fill="#5fae9a" opacity="0.895"/>
+<rect class="bb" style="--i:18" x="180" y="6" width="7" height="44" rx="1.5" fill="#5fae9a" opacity="0.9300000000000002"/>
+<rect class="bb" style="--i:19" x="190" y="4" width="7" height="46" rx="1.5" fill="#5fae9a" opacity="0.9650000000000001"/>
+</svg>
+<span class="mu">VS last week</span>
+</div>
+</div>
+<div class="g g2" style="margin:18px 0">
+<div class="card">
+<div style="display:flex;justify-content:space-between;align-items:center">
+<h3 style="margin:0">Revenue forecast</h3>
+<span>
+<select class="b">
+<option>▣ Monthly</option>
+<option>Weekly</option>
+<option>Yearly</option>
+</select> <span class="mu">⋮</span>
+</span>
+</div>
+<div id="fcw" style="position:relative;margin-top:10px">
+<svg viewBox="0 0 800 300" width="100%" style="display:block" onmousemove="fcMove(event)" onmouseleave="$('#fcw').classList.remove('on')">
+<line x1="50" x2="780" y1="260" y2="260" stroke="var(--bd)" stroke-dasharray="4"/>
+<text x="0" y="264" font-size="11" style="fill:var(--mu)">$0K</text>
+<line x1="50" x2="780" y1="212" y2="212" stroke="var(--bd)" stroke-dasharray="4"/>
+<text x="0" y="216" font-size="11" style="fill:var(--mu)">$6K</text>
+<line x1="50" x2="780" y1="164" y2="164" stroke="var(--bd)" stroke-dasharray="4"/>
+<text x="0" y="168" font-size="11" style="fill:var(--mu)">$12K</text>
+<line x1="50" x2="780" y1="116" y2="116" stroke="var(--bd)" stroke-dasharray="4"/>
+<text x="0" y="120" font-size="11" style="fill:var(--mu)">$18K</text>
+<line x1="50" x2="780" y1="68" y2="68" stroke="var(--bd)" stroke-dasharray="4"/>
+<text x="0" y="72" font-size="11" style="fill:var(--mu)">$24K</text>
+<line x1="50" x2="780" y1="20" y2="20" stroke="var(--bd)" stroke-dasharray="4"/>
+<text x="0" y="24" font-size="11" style="fill:var(--mu)">$30K</text>
+<text x="50" y="288" font-size="11" text-anchor="middle" style="fill:var(--mu)">Jan</text>
+<text x="116.36363636363636" y="288" font-size="11" text-anchor="middle" style="fill:var(--mu)">Feb</text>
+<text x="182.72727272727272" y="288" font-size="11" text-anchor="middle" style="fill:var(--mu)">Mar</text>
+<text x="249.0909090909091" y="288" font-size="11" text-anchor="middle" style="fill:var(--mu)">Apr</text>
+<text x="315.45454545454544" y="288" font-size="11" text-anchor="middle" style="fill:var(--mu)">May</text>
+<text x="381.8181818181818" y="288" font-size="11" text-anchor="middle" style="fill:var(--mu)">Jun</text>
+<text x="448.1818181818182" y="288" font-size="11" text-anchor="middle" style="fill:var(--mu)">Jul</text>
+<text x="514.5454545454545" y="288" font-size="11" text-anchor="middle" style="fill:var(--mu)">Aug</text>
+<text x="580.9090909090909" y="288" font-size="11" text-anchor="middle" style="fill:var(--mu)">Sep</text>
+<text x="647.2727272727273" y="288" font-size="11" text-anchor="middle" style="fill:var(--mu)">Oct</text>
+<text x="713.6363636363636" y="288" font-size="11" text-anchor="middle" style="fill:var(--mu)">Nov</text>
+<text x="780" y="288" font-size="11" text-anchor="middle" style="fill:var(--mu)">Dec</text>
+<line id="fcl" x1="0" x2="0" y1="20" y2="260" stroke="var(--mu)" stroke-dasharray="3 3"/>
+<path class="ln" pathLength="1" stroke-dasharray="1" d="M50,168C83.18181818181819,168 83.18181818181819,156 116.36363636363636,156C149.54545454545453,156 149.54545454545453,132 182.72727272727272,132C215.9090909090909,132 215.9090909090909,116 249.0909090909091,116C282.27272727272725,116 282.27272727272725,92 315.45454545454544,92C348.6363636363636,92 348.6363636363636,72 381.8181818181818,72C415,72 415,60 448.1818181818182,60C481.3636363636364,60 481.3636363636364,72 514.5454545454545,72C547.7272727272727,72 547.7272727272727,52 580.9090909090909,52C614.090909090909,52 614.090909090909,68 647.2727272727273,68C680.4545454545455,68 680.4545454545455,84 713.6363636363636,84C746.8181818181818,84 746.8181818181818,92 780,92" fill="none" stroke="#8b8fc4" stroke-width="2.5" style="animation-delay:0s"/>
+<path class="ln" pathLength="1" stroke-dasharray="1" d="M50,196C83.18181818181819,196 83.18181818181819,180 116.36363636363636,180C149.54545454545453,180 149.54545454545453,164 182.72727272727272,164C215.9090909090909,164 215.9090909090909,148 249.0909090909091,148C282.27272727272725,148 282.27272727272725,132 315.45454545454544,132C348.6363636363636,132 348.6363636363636,108 381.8181818181818,108C415,108 415,104 448.1818181818182,104C481.3636363636364,104 481.3636363636364,116 514.5454545454545,116C547.7272727272727,116 547.7272727272727,124 580.9090909090909,124C614.090909090909,124 614.090909090909,132 647.2727272727273,132C680.4545454545455,132 680.4545454545455,124 713.6363636363636,124C746.8181818181818,124 746.8181818181818,116 780,116" fill="none" stroke="#c9a46a" stroke-width="2.5" style="animation-delay:0.2s"/>
+<path class="ln" pathLength="1" stroke-dasharray="1" d="M50,220C83.18181818181819,220 83.18181818181819,204 116.36363636363636,204C149.54545454545453,204 149.54545454545453,188 182.72727272727272,188C215.9090909090909,188 215.9090909090909,172 249.0909090909091,172C282.27272727272725,172 282.27272727272725,156 315.45454545454544,156C348.6363636363636,156 348.6363636363636,144 381.8181818181818,144C415,144 415,140 448.1818181818182,140C481.3636363636364,140 481.3636363636364,148 514.5454545454545,148C547.7272727272727,148 547.7272727272727,156 580.9090909090909,156C614.090909090909,156 614.090909090909,164 647.2727272727273,164C680.4545454545455,164 680.4545454545455,156 713.6363636363636,156C746.8181818181818,156 746.8181818181818,148 780,148" fill="none" stroke="#7FA6B8" stroke-width="2.5" style="animation-delay:0.4s"/>
+<circle class="fcc" id="fc0" r="5" fill="#8b8fc4" stroke="#fff" stroke-width="2"/>
+<circle class="fcc" id="fc1" r="5" fill="#c9a46a" stroke="#fff" stroke-width="2"/>
+<circle class="fcc" id="fc2" r="5" fill="#7FA6B8" stroke="#fff" stroke-width="2"/>
+<rect width="800" height="300" fill="transparent"/>
+</svg>
+<div class="fct" id="fct">
+</div>
+</div>
+<div class="mu" style="display:flex;justify-content:center;gap:22px;border-top:1px solid var(--bd);margin-top:14px;padding-top:12px;flex-wrap:wrap">
+<span>
+<span style="color:#8b8fc4">●</span> Profit margin</span>
+<span>
+<span style="color:#c9a46a">●</span> Operating expenses</span>
+<span>
+<span style="color:#7FA6B8">●</span> Sales revenue</span>
+</div>
+</div>
+<div class="card">
+<div style="display:flex;justify-content:space-between;align-items:center">
+<h3 style="margin:0">Source</h3>
+<span>
+<select class="b">
+<option>Contacts</option>
+<option>Companies</option>
+</select> <span class="mu">⋮</span>
+</span>
+</div>
+<div style="position:relative;width:200px;margin:16px auto">
+<svg viewBox="0 0 42 42" style="transform:rotate(-90deg);display:block">
+<circle class="dn" cx="21" cy="21" r="15.9" fill="none" stroke="#4f7f96" stroke-width="5" pathLength="100" stroke-dasharray="55 45" stroke-dashoffset="0" style="animation-delay:0s"/>
+<circle class="dn" cx="21" cy="21" r="15.9" fill="none" stroke="#8b8fc4" stroke-width="5" pathLength="100" stroke-dasharray="20 80" stroke-dashoffset="-55" style="animation-delay:0.2s"/>
+<circle class="dn" cx="21" cy="21" r="15.9" fill="none" stroke="#7FA6B8" stroke-width="5" pathLength="100" stroke-dasharray="15 85" stroke-dashoffset="-75" style="animation-delay:0.4s"/>
+<circle class="dn" cx="21" cy="21" r="15.9" fill="none" stroke="#5fae9a" stroke-width="5" pathLength="100" stroke-dasharray="10 90" stroke-dashoffset="-90" style="animation-delay:0.6000000000000001s"/>
+</svg>
+<div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center">
+<b style="font-size:24px">12.450</b>
+<small class="mu">Total</small>
+</div>
+</div>
+<div style="display:flex;justify-content:space-between;padding:6px 0">
+<span style="border-left:3px solid #4f7f96;padding-left:10px">Website</span>
+<span>
+<b>6.848</b> <span class="mu" style="margin-left:12px">55%</span>
+</span>
+</div>
+<div style="display:flex;justify-content:space-between;padding:6px 0">
+<span style="border-left:3px solid #8b8fc4;padding-left:10px">Social Media</span>
+<span>
+<b>2.490</b> <span class="mu" style="margin-left:12px">20%</span>
+</span>
+</div>
+<div style="display:flex;justify-content:space-between;padding:6px 0">
+<span style="border-left:3px solid #7FA6B8;padding-left:10px">Email</span>
+<span>
+<b>1.867</b> <span class="mu" style="margin-left:12px">15%</span>
+</span>
+</div>
+<div style="display:flex;justify-content:space-between;padding:6px 0">
+<span style="border-left:3px solid #5fae9a;padding-left:10px">Referral</span>
+<span>
+<b>1.245</b> <span class="mu" style="margin-left:12px">10%</span>
+</span>
+</div>
+<button class="b" style="width:100%;margin-top:10px">View details</button>
+</div>
+</div>
+<div class="bar" style="justify-content:space-between;align-items:center">
+<h3 style="margin:0">Table data sales</h3>
+<div class="bar" style="margin:0">
+<input class="in" placeholder="Search data">
+<button class="b">⇅ Sort by</button>
+<button class="b">Filter</button>
+</div>
+</div>
+<div class="card tw">
+<table>
+<tr>
+<th>
+<input type=checkbox>
+</th>
+<th>DEAL NAME</th>
+<th>COMPANY</th>
+<th>PRICE</th>
+<th>DATE CREATED</th>
+<th>OWNER</th>
+<th>STAGE</th>
+</tr>
+<tr>
+<td>
+<input type=checkbox>
+</td>
+<td>
+<b>Cloud Infrastructure Migration</b>
+</td>
+<td>Amazon.com, Inc</td>
+<td>$850,000.00</td>
+<td>Mon, 12 Jan 2025</td>
+<td>
+<span class="av" style="background:hsl(282 55% 45%)">AM</span>Ardian Maulana</td>
+<td>
+<span class="pl" style="--c:#7FA6B8">New</span>
+</td>
+</tr>
+<tr>
+<td>
+<input type=checkbox>
+</td>
+<td>
+<b>Online Learning Platform</b>
+</td>
+<td>Shopify Inc</td>
+<td>$420,000.00</td>
+<td>Wed, 21 Jan 2025</td>
+<td>
+<span class="av" style="background:hsl(190 55% 45%)">DW</span>Dwi Wahyu</td>
+<td>
+<span class="pl" style="--c:#8b8fc4">Qualified</span>
+</td>
+</tr>
+<tr>
+<td>
+<input type=checkbox>
+</td>
+<td>
+<b>Retail POS System Upgrade</b>
+</td>
+<td>Best Buy Co.</td>
+<td>$315,500.00</td>
+<td>Fri, 30 Jan 2025</td>
+<td>
+<span class="av" style="background:hsl(264 55% 45%)">AA</span>Adinda Ayu</td>
+<td>
+<span class="pl" style="--c:#c9a46a">Proposal</span>
+</td>
+</tr>
+<tr>
+<td>
+<input type=checkbox>
+</td>
+<td>
+<b>Brand Identity Redesign</b>
+</td>
+<td>Nike, Inc</td>
+<td>$180,000.00</td>
+<td>Tue, 04 Feb 2025</td>
+<td>
+<span class="av" style="background:hsl(109 55% 45%)">GA</span>Galih Adi</td>
+<td>
+<span class="pl" style="--c:#5fae9a">Won</span>
+</td>
+</tr>
+<tr>
+<td>
+<input type=checkbox>
+</td>
+<td>
+<b>Travel Booking Integration</b>
+</td>
+<td>Traveloka</td>
+<td>$96,000.00</td>
+<td>Sat, 15 Feb 2025</td>
+<td>
+<span class="av" style="background:hsl(189 55% 45%)">HK</span>Hendra K.</td>
+<td>
+<span class="pl" style="--c:#7FA6B8">Payment</span>
+</td>
+</tr>
+<tr>
+<td>
+<input type=checkbox>
+</td>
+<td>
+<b>Pharmacy Inventory Suite</b>
+</td>
+<td>PharmaCare</td>
+<td>$240,750.00</td>
+<td>Thu, 27 Feb 2025</td>
+<td>
+<span class="av" style="background:hsl(267 55% 45%)">MP</span>Maulana P.</td>
+<td>
+<span class="pl" style="--c:#c96a6a">Lost</span>
+</td>
+</tr>
+</table>
+</div>
+</div></main>
+<script src="../javascript/app.js"></script>
+<script src="../javascript/backend.js"></script>
+</body>
+</html>

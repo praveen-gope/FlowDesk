@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Contact FlowDesk</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body style="display:block;overflow:auto">
+  <main style="max-width:600px;margin:40px auto;padding:20px">
+    <div class="logo" style="padding:0">FlowDesk</div>
+    <h1>Let's Talk</h1>
+    <form id="lead-form">
+      <label for="name">Full name</label><input class="in" style="width:100%" id="name" name="name" autocomplete="name" maxlength="120" required>
+      <label for="email">Email</label><input class="in" style="width:100%" id="email" name="email" type="email" autocomplete="email" maxlength="254" required>
+      <label for="phone">Phone</label><input class="in" style="width:100%" id="phone" name="phone" type="tel" autocomplete="tel" maxlength="40">
+      <label for="company">Company</label><input class="in" style="width:100%" id="company" name="company" autocomplete="organization" maxlength="160">
+      <label for="message">Message</label><textarea class="in" style="width:100%;min-height:140px" id="message" name="message" maxlength="4000"></textarea>
+      <input name="website" tabindex="-1" autocomplete="off" hidden>
+      <input name="source" type="hidden" value="FlowDesk website">
+      <p><button class="b p" type="submit">Send enquiry</button></p>
+      <p id="form-status" role="status" aria-live="polite"></p>
+    </form>
+  </main>
+  <script src="../javascript/lead-form.js"></script>
+</body>
+</html>

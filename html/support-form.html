@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Contact Support | FlowDesk</title><link rel="stylesheet" href="../css/style.css"><link rel="stylesheet" href="../css/public.css"></head>
+<body class="auth-page">
+<main class="auth-main"><div class="auth-panel" style="max-width:560px">
+<div class="auth-brand">FlowDesk</div><h1>How can we help?</h1><p class="mu">Send your request to our support team.</p>
+<form id="support-form">
+<label for="support-name">Full name</label><input class="in" id="support-name" name="name" autocomplete="name" maxlength="160" required>
+<label for="support-email">Email address</label><input class="in" id="support-email" name="email" type="email" autocomplete="email" maxlength="254" required>
+<label for="support-phone">Phone (optional)</label><input class="in" id="support-phone" name="phone" type="tel" autocomplete="tel" maxlength="40">
+<label for="support-subject">Subject</label><input class="in" id="support-subject" name="subject" maxlength="160" required>
+<div class="g" style="grid-template-columns:1fr 1fr">
+<div><label for="support-category">Category</label><select class="in" id="support-category" name="category"><option>Support</option><option>Technical issue</option><option>Billing</option><option>General enquiry</option></select></div>
+<div><label for="support-priority">Priority</label><select class="in" id="support-priority" name="priority"><option>Low</option><option selected>Normal</option><option>High</option><option>Urgent</option></select></div>
+</div>
+<label for="support-message">Message</label><textarea class="in" id="support-message" name="message" style="min-height:160px" maxlength="4000" required></textarea>
+<input name="website" hidden tabindex="-1" autocomplete="off"><input name="source" type="hidden" value="FlowDesk support form">
+<button class="b p auth-submit" type="submit">Submit support request</button>
+<p id="support-status" class="auth-status" role="status" aria-live="polite"></p>
+</form></div></main><script src="../javascript/support-form.js"></script>
+</body></html>

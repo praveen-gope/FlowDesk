@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sign In | FlowDesk</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/public.css">
+</head>
+<body class="auth-page" data-page="Sign in">
+  <main class="auth-main">
+    <div class="auth-panel">
+      <div class="auth-brand">FlowDesk</div>
+      <h1>Welcome back</h1>
+      <p class="mu">Sign in to your workspace.</p>
+      <form id="login-form">
+        <label for="login-email">Email address</label>
+        <input class="in" id="login-email" name="email" type="email" autocomplete="username" placeholder="you@company.com" required>
+        <label for="login-password">Password</label>
+        <input class="in" id="login-password" name="password" type="password" autocomplete="current-password" required>
+        <button class="b p auth-submit" type="submit">Sign in</button>
+        <p id="login-status" class="auth-status" role="status" aria-live="polite"></p>
+      </form>
+    </div>
+  </main>
+  <script src="../javascript/auth.js"></script>
+</body>
+</html>

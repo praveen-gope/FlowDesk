@@ -1,0 +1,6 @@
+db.sqlite3
+.dev-secret
+LOCAL-ACCOUNTS.md
+__pycache__/
+*.pyc
+.venv/
