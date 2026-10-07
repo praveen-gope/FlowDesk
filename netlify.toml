@@ -1,0 +1,68 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+  functions = "netlify/functions"
+
+[build.environment]
+  NODE_VERSION = "22"
+
+[functions]
+  node_bundler = "esbuild"
+  external_node_modules = ["@netlify/identity", "@netlify/database", "pg"]
+
+[functions.workspace]
+  included_files = [".build/workspace/**"]
+
+[[redirects]]
+  from = "/html/sign-in"
+  to = "/sign-in"
+  status = 301
+
+[[redirects]]
+  from = "/html/sign-in.html"
+  to = "/sign-in"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/sign-in"
+  to = "/sign-in.html"
+  status = 200
+
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/crm?route=:splat"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/html/lead-form"
+  to = "/html/lead-form.html"
+  status = 200
+
+[[redirects]]
+  from = "/html/support-form"
+  to = "/html/support-form.html"
+  status = 200
+
+[[redirects]]
+  from = "/html/forgot-password"
+  to = "/html/forgot-password.html"
+  status = 200
+
+[[redirects]]
+  from = "/html/*"
+  to = "/.netlify/functions/workspace?page=:splat"
+  status = 200
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    X-Frame-Options = "DENY"
+
+[[headers]]
+  for = "/sign-in*"
+  [headers.values]
+    Cache-Control = "no-store"

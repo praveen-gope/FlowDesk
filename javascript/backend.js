@@ -1,8 +1,9 @@
-// Authenticate with Django and connect editable HTML pages to scoped API records.
+// Connect editable pages to scoped CRM APIs (Django locally, Functions on Netlify).
 window.FlowDeskReady = (async () => {
   if (location.protocol === 'file:') return;
+  await window.FlowDeskIdentityCallbackReady;
   const response = await fetch('/api/auth/session');
-  if (!response.ok) return;
+  if (!response.ok) throw new Error('CRM session unavailable. Check account access and backend configuration.');
   const session = await response.json();
   let csrf = session.csrfToken;
   const user = session.user;
