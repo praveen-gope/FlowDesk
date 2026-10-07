@@ -1,3 +1,5 @@
+import { request } from './api-client.js';
+
 const leadBody = document.querySelector('#lead-rows');
 let captured = [];
 function showLeads() {
@@ -22,15 +24,12 @@ async function loadLeads() {
   try {
     if (location.protocol === 'file:') throw new Error('Open FlowDesk through the local server to receive leads.');
     if(window.FlowDeskReady) await window.FlowDeskReady;
-    const response = await fetch('/api/leads');
-    if (response.status === 401) {
-      location.href='/html/sign-in.html';
-      return;
-    }
-    if (!response.ok) throw new Error('Could not load captured leads. Try refreshing.');
-    captured = (await response.json()).leads;
+    captured = (await request('/api/leads')).leads;
     showLeads(); status.textContent = 'Updated ' + new Date().toLocaleTimeString();
-  } catch (error) { status.textContent = error.message; }
+  } catch (error) {
+    if (error.status === 401) location.href='/sign-in';
+    status.textContent = error.message;
+  }
 }
 document.querySelector('#lead-search').addEventListener('input', showLeads);
 document.querySelector('#lead-refresh').addEventListener('click', loadLeads);

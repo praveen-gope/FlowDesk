@@ -1,31 +1,17 @@
-// Authenticate with Django and connect editable HTML pages to scoped API records.
+import { initializeIdentity, request, signOut } from './api-client.js';
+
 window.FlowDeskReady = (async () => {
   if (location.protocol === 'file:') return;
-  const response = await fetch('/api/auth/session');
-  if (!response.ok) return;
-  const session = await response.json();
-  let csrf = session.csrfToken;
+  if (await initializeIdentity() === false) return;
+  const session = await request('/api/auth/session');
   const user = session.user;
-  async function request(url, method='GET', data) {
-    const res = await fetch(url, {method, headers:{'Content-Type':'application/json','X-CSRFToken':csrf}, ...(data ? {body:JSON.stringify(data)} : {})});
-    const result = await res.json();
-    if(!res.ok) throw new Error(result.error || 'Request failed.');
-    if(result.csrfToken)csrf=result.csrfToken;
-    return result;
-  }
   const page=document.body.dataset.page,view=document.querySelector('#v');
   const notice=message=>notify(message);
-  if(page==='Sign in'){
-    const button=view.querySelector('button');
-    button.onclick=async()=>{const inputs=view.querySelectorAll('input');inputs.forEach(i=>i.required=true);if([...inputs].some(i=>!i.reportValidity()))return;button.disabled=true;
-      try{await request('/api/auth/login','POST',{email:inputs[0].value,password:inputs[1].value});location.href='/index.html'}catch(error){notice(error.message)}finally{button.disabled=false}};
-    view.querySelectorAll('a').forEach(a=>a.hidden=true);return;
-  }
-  if(!user){location.href='/html/sign-in.html';return}
+  if(!user){location.href='/sign-in';return}
   const privileged=['super_admin','admin','manager'].includes(user.role);
   const me=document.querySelector('.me');me.querySelector('b').textContent=user.name;me.querySelector('small').textContent=user.email;me.querySelector('.av').textContent=user.name.split(' ').map(w=>w[0]).slice(0,2).join('');
   const role=document.createElement('small');role.textContent=user.roleLabel;me.querySelector('div').append(role);
-  const logout=document.createElement('button');logout.className='b';logout.textContent='Sign out';logout.onclick=async()=>{await request('/api/auth/logout','POST',{});location.href='/html/sign-in.html'};document.querySelector('header .bar').append(logout);
+  const logout=document.createElement('button');logout.className='b';logout.textContent='Sign out';logout.onclick=signOut;document.querySelector('header .bar').append(logout);
   document.querySelectorAll('#nav a').forEach(a=>{
     if(['Sign in','Sign up','Forgot password','OTP verification','New password'].includes(a.dataset.p))a.hidden=true;
     if(a.dataset.p==='Users & Teams')a.hidden=false;
@@ -92,7 +78,7 @@ window.FlowDeskReady = (async () => {
   }
   if(page==='Profile'){const inputs=view.querySelectorAll('input');inputs[0].value=user.name;inputs[1].value='';inputs[2].value=user.email;view.querySelector('button').onclick=()=>notice('Account details are managed by your administrator.')}
   if(['Company detail','Deal detail','Product detail','Edit contact'].includes(page))location.replace('/html/record.html');
-  if(page==='Import CSV')view.querySelector('button').onclick=()=>notice('Bulk import is not connected to Django yet. Use the record forms or capture API.');
+  if(page==='Import CSV')view.querySelector('button').onclick=()=>notice('Bulk import is not connected yet. Use the record forms or capture API.');
   if(['Settings','Integrations','Explore integrations'].includes(page)&&user.role!=='super_admin'){view.replaceChildren();const p=document.createElement('p');p.textContent='System configuration requires Super Admin access.';view.append(p)}
   if(page==='Users & Teams'){
     const form=document.querySelector('#user-form'),teamForm=document.querySelector('#team-form');

@@ -12,7 +12,7 @@
     <div class="auth-panel">
       <div class="auth-brand">FlowDesk</div>
       <h1>Welcome back</h1>
-      <p class="mu">Sign in to your workspace.</p>
+      <p class="mu" id="auth-description">Sign in to your workspace.</p>
       <form id="login-form">
         <label for="login-email">Email address</label>
         <input class="in" id="login-email" name="email" type="email" autocomplete="username" placeholder="you@company.com" required>
@@ -21,8 +21,10 @@
         <button class="b p auth-submit" type="submit">Sign in</button>
         <p id="login-status" class="auth-status" role="status" aria-live="polite"></p>
       </form>
+      <p><a id="forgot-password-link" href="/html/forgot-password.html">Forgot your password?</a></p>
+      <p class="mu">Accounts are provided by your workspace administrator.</p>
     </div>
   </main>
-  <script src="../javascript/auth.js"></script>
+  <script type="module" src="../javascript/auth.js"></script>
 </body>
 </html>
