@@ -35,6 +35,15 @@ dist/
 # Node dependencies
 node_modules/
 .npm/
+.netlify/state.json
+.netlify/cache/
+.netlify/dev/
+.netlify/functions/
+.netlify/functions-serve/
+.netlify/edge-functions/
+.netlify/plugins/
+.netlify/database/
+.netlify/db/
 
 # Development files, logs and temporary output
 work/

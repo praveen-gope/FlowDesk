@@ -1,5 +1,7 @@
 # FlowDesk Django Backend
 
+This folder is the legacy local Django implementation. The deployed site now uses Netlify Identity, Netlify Functions, and Netlify Database; see `../NETLIFY-SETUP.md`. The instructions below apply only to running or inspecting the old Django backend and do not configure the Netlify deployment.
+
 Website support capture is now available at POST `/api/support/capture`. The Support Tickets page uses scoped records and assignments, with automatic refresh every five seconds. External website setup and examples are in `../SUPPORT-API.md`. Configure `SUPPORT_FORM_ORIGINS` for the submitting website and restart the server.
 
 ## Local Preview
