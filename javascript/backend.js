@@ -48,6 +48,8 @@ window.FlowDeskReady = (async () => {
     }catch(error){notice(error.message)}
   }
   window.FlowDesk={request,user,assign};
+  const {installShortcuts}=await import('/javascript/shortcuts.js');
+  installShortcuts(window.FlowDesk);
   const kinds={Contacts:'contact',Companies:'company',Deals:'deal',Tasks:'task',Products:'product',Invoices:'invoice',Emails:'communication',Notifications:'communication','Support Notes':'note',Documents:'document','Support Tickets':'ticket'};
   const formKind={'Add contact':'contact','Add company':'company','Add deal':'deal','Add task':'task','Add product':'product','Add support note':'note','Add document':'document'}[page];
   if(formKind){view.querySelector('button').onclick=async()=>{
