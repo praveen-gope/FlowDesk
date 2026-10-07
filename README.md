@@ -24,7 +24,6 @@ Node.js is required for the preview launcher. Open http://127.0.0.1:3000 after t
 
 Use `npm ci` and `npm run build`; publish `dist` with Functions from `netlify/functions`. `netlify.toml` supplies these settings. Enable Identity and managed Netlify Database, then follow the deployment guide above for migrations and verified first-administrator setup. The canonical login is `/sign-in`. This deployment uses a separate PostgreSQL database and Identity accounts; Django users and SQLite records are not imported automatically. Production sign-in must be verified after deployment, not inferred from a successful build.
 
-- [Hinglish project explanation, CRM comparison, six requirements and demo script](docs/PROJECT-EXPLANATION-HINGLISH.md)
 
 - [Backend setup, permissions and API](backend/README.md)
 - [Website lead capture](API.md)
