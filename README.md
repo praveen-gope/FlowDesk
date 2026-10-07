@@ -34,7 +34,7 @@ The Django backend is now the main server. Run `start-django.ps1`, then open htt
 Open `index.html` to view the dashboard. Every menu item has a separate page in `html/`.
 
 - Edit page headings, labels, buttons, tables, and other visible content directly in the matching HTML file.
-- Edit sidebar links and account information in each HTML file.
+- Edit all sidebar links and sidebar account defaults in `html/menu.html`. Every CRM page includes this one shared menu through Django; use the local server to view it.
 - Change colors, spacing, and responsive layout in `css/style.css`.
 - Change interactive behavior in `javascript/app.js`.
 

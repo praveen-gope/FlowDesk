@@ -11,6 +11,7 @@ from django.db import transaction
 from django.db.models import Q
 from django.http import JsonResponse, FileResponse, HttpResponse
 from django.middleware.csrf import get_token
+from django.template import Engine, Context
 from django.views.decorators.csrf import csrf_exempt
 from .models import User, Team, Record, AuditEvent, visible_records
 
@@ -430,4 +431,8 @@ def frontend(request, asset='index.html'):
     if relative.suffix == '.html' and asset not in public and not request.user.is_authenticated:
         from django.shortcuts import redirect
         return redirect('/html/sign-in.html')
+    if relative.suffix == '.html':
+        engine = Engine(dirs=[str(settings.FRONTEND_DIR)])
+        content = engine.get_template(asset).render(Context())
+        return HttpResponse(content, content_type='text/html; charset=utf-8')
     return FileResponse(file.open('rb'))

@@ -148,6 +148,10 @@ class RoleAccessTests(TestCase):
         self.assertEqual(self.client.get('/html/lead-form.html').status_code,200)
         self.as_role('sales')
         self.assertEqual(self.client.get('/html/contacts.html').status_code,200)
+        response = self.client.get('/html/contacts.html')
+        self.assertContains(response, 'id="nav"', count=1)
+        self.assertContains(response, 'Support Tickets')
+        self.assertNotContains(response, '{% include')
 
 
 class SupportCaptureTests(TestCase):
