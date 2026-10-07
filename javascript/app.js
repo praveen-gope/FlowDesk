@@ -25,7 +25,23 @@ Dashboard:()=>`<div class="tabs"><span class="on">Overview</span><span>Sales</sp
 Contacts:0};
 const FC=[["Profit margin","#8b8fc4",[11.5,13,16,18,21,23.5,25,23.5,26,24,22,21]],["Operating expenses","#c9a46a",[8,10,12,14,16,19,19.5,18,17,16,17,18]],["Sales revenue","#7FA6B8",[5,7,9,11,13,14.5,15,14,13,12,13,14]]],MO="Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec".split(" "),SRC=[["Website","6.848",55,"#4f7f96"],["Social Media","2.490",20,"#8b8fc4"],["Email","1.867",15,"#7FA6B8"],["Referral","1.245",10,"#5fae9a"]];
 const fx=i=>50+i*730/11,fy=v=>260-v*8;
-function fcMove(e){const r=e.currentTarget.getBoundingClientRect();let i=Math.round(((e.clientX-r.left)/r.width*800-50)/(730/11));i=Math.max(0,Math.min(11,i));const x=fx(i),px=x/800*r.width;$("#fcw").classList.add("on");$("#fcl").setAttribute("x1",x);$("#fcl").setAttribute("x2",x);FC.forEach(([n,c,a],k)=>{const o=$("#fc"+k);o.setAttribute("cx",x);o.setAttribute("cy",fy(a[i]))});const t=$("#fct");t.style.left=(i>7?px-14:px+14)+"px";t.style.transform=i>7?"translateX(-100%)":"none";t.innerHTML=`<b>${MO[i]}</b>`+FC.map(([n,c,a])=>`<div style="margin-top:6px"><span style="color:${c}">●</span> ${n}: <b>$${a[i].toFixed(1)}K</b></div>`).join("")}
+function fcMove(e){
+  const chart=$("#fcw"),t=$("#fct"),r=e.currentTarget.getBoundingClientRect();
+  if(!chart||!t||!r.width)return;
+  const i=Math.max(0,Math.min(11,Math.round(((e.clientX-r.left)/r.width*800-50)/(730/11))));
+  const x=fx(i),px=x/800*r.width;
+  $("#fcl").style.transform=`translateX(${x}px)`;
+  FC.forEach(([n,c,a],k)=>{const o=$("#fc"+k);o.style.cx=`${x}px`;o.style.cy=`${fy(a[i])}px`});
+  if(t.dataset.month!==String(i)){
+    t.innerHTML=`<b class="forecast-month">${MO[i]}</b>`+FC.map(([n,c,a])=>`<div class="forecast-row"><span class="forecast-dot" style="background:${c}"></span><span>${n}</span><b>$${a[i].toFixed(1)}K</b></div>`).join("");
+    t.dataset.month=String(i);
+  }
+  const width=t.offsetWidth,available=chart.clientWidth;
+  const left=px+16+width<=available?px+16:px-width-16;
+  t.style.left=`${Math.max(0,Math.min(available-width,left))}px`;
+  if(!chart.classList.contains('on'))void chart.offsetWidth;
+  chart.classList.add('on');
+}
 P.Dashboard=()=>`<div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:18px"><div class="tabs" style="margin:0"><span class="on">Overview</span><span>Sales</span><span>Order</span><span>Report</span></div><div class="bar" style="margin:0"><button class="b">⚟ Filter</button><button class="b p">⭳ Export all</button></div></div>
 <div class="g g3">${[["Total sales","$28.500","↑ 10.2%","#7FA6B8","$"],["Operating expenses","$18.200","↓ 5.75%","#c9a46a","▣"],["Gross profit","$22.500","↑ 8.55%","#5fae9a","↗"]].map(([t,v,d,c,i])=>`<div class="card"><div style="display:flex;justify-content:space-between;align-items:center"><span class="mu"><span class="ico" style="--c:${c}">${i}</span> ${t}</span><span class="mu">⋮</span></div><div class="big">${v} <span class="pl n" style="--c:${d[0]=="↓"?"#c96a6a":"#5fae9a"}">${d}</span></div>${bars(c)}<span class="mu">VS last week</span></div>`).join("")}</div>
 <div class="g g2" style="margin:18px 0"><div class="card"><div style="display:flex;justify-content:space-between;align-items:center"><h3 style="margin:0">Revenue forecast</h3><span><select class="b"><option>▣ Monthly</option><option>Weekly</option><option>Yearly</option></select> <span class="mu">⋮</span></span></div><div id="fcw" style="position:relative;margin-top:10px"><svg viewBox="0 0 800 300" width="100%" style="display:block" onmousemove="fcMove(event)" onmouseleave="$('#fcw').classList.remove('on')">${[0,6,12,18,24,30].map(v=>`<line x1="50" x2="780" y1="${fy(v)}" y2="${fy(v)}" stroke="var(--bd)" stroke-dasharray="4"/><text x="0" y="${fy(v)+4}" font-size="11" style="fill:var(--mu)">$${v}K</text>`).join("")}${MO.map((m,i)=>`<text x="${fx(i)}" y="288" font-size="11" text-anchor="middle" style="fill:var(--mu)">${m}</text>`).join("")}<line id="fcl" x1="0" x2="0" y1="20" y2="260" stroke="var(--mu)" stroke-dasharray="3 3"/>${FC.map(([n,c,a],k)=>`<path class="ln" pathLength="1" stroke-dasharray="1" d="${sm(a.map((v,i)=>[fx(i),fy(v)]))}" fill="none" stroke="${c}" stroke-width="2.5" style="animation-delay:${k*.2}s"/>`).join("")}${FC.map(([n,c],k)=>`<circle class="fcc" id="fc${k}" r="5" fill="${c}" stroke="#fff" stroke-width="2"/>`).join("")}<rect width="800" height="300" fill="transparent"/></svg><div class="fct" id="fct"></div></div><div class="mu" style="display:flex;justify-content:center;gap:22px;border-top:1px solid var(--bd);margin-top:14px;padding-top:12px;flex-wrap:wrap">${FC.map(([n,c])=>`<span><span style="color:${c}">●</span> ${n}</span>`).join("")}</div></div>
