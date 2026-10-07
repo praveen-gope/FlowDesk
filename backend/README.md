@@ -12,6 +12,10 @@ Django 5.2, session authentication, CSRF protection, SQLite, custom users, five 
 
 ## Run
 
+Install requirements, then copy `.env.example` to `.env` in this backend folder and edit the values. Django automatically loads this file; hosting environment variables override it. `.env` is ignored by Git. Use `1`/`0` for boolean settings. Never put real secrets in `.env.example` or frontend JavaScript.
+
+For production set `DJANGO_DEBUG=0`, a unique `DJANGO_SECRET_KEY`, and `DJANGO_ALLOWED_HOSTS` to the backend hostname (without a scheme). Set `DJANGO_CSRF_TRUSTED_ORIGINS` to trusted HTTPS origins. Set `LEAD_FORM_ORIGINS` and `SUPPORT_FORM_ORIGINS` to the exact external website origin, such as your Netlify URL. Netlify environment variables cannot configure a Django server hosted elsewhere: configure these on the backend host. SMTP configuration does not implement the unfinished outbound-email workflows.
+
 ```powershell
 python -m venv .venv
 .venv\Scripts\python -m pip install -r requirements.txt
