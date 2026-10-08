@@ -1,6 +1,14 @@
 // Connect editable pages to scoped CRM APIs (Django locally, Functions on Netlify).
 window.FlowDeskReady = (async () => {
-  if (location.protocol === 'file:') return;
+  const listPages=['Contacts','Companies','Deals','Tasks','Products','Invoices','Emails','Notifications','Support Notes','Documents','Support Tickets'];
+  let loading;
+  if(location.protocol==='file:'){document.querySelectorAll('table').forEach(table=>table.dataset.recordsState='ready');return}
+  if(listPages.includes(document.body.dataset.page)){
+    loading=document.createElement('p');loading.id='backend-list-status';loading.className='mu';loading.setAttribute('role','status');loading.textContent='Loading records...';
+    const table=document.querySelector('#v table');
+    if(table){table.setAttribute('aria-busy','true');table.parentElement.after(loading)}
+    else document.querySelector('#v').append(loading);
+  }
   await window.FlowDeskIdentityCallbackReady;
   const response = await fetch('/api/auth/session');
   if (!response.ok) throw new Error('CRM session unavailable. Check account access and backend configuration.');
@@ -61,12 +69,14 @@ window.FlowDeskReady = (async () => {
   if(kind){
     let table=view.querySelector('table');
     if(!table){view.replaceChildren();table=document.createElement('table');const wrap=document.createElement('div');wrap.className='card tw';wrap.append(table);view.append(wrap);table.innerHTML='<thead><tr><th></th><th>Name</th><th>Message</th><th>Status</th></tr></thead><tbody></tbody>'}
+    if(loading&&!loading.isConnected)table.parentElement.after(loading);
     const render=async()=>{
       const {records}=await request('/api/records/'+kind);const headers=[...table.querySelectorAll('th')].slice(1).map(th=>th.textContent.trim());table.querySelectorAll('tr').forEach((r,i)=>{if(i)r.remove()});
       records.forEach(record=>{const row=table.insertRow();const details=Object.fromEntries(Object.entries(record.details).map(([key,value])=>[key.toLowerCase(),value]));row.insertCell().innerHTML='<input type="checkbox" aria-label="Select record">';headers.forEach((label,i)=>{const key=label.toLowerCase();let value=details[key]||'';if(i===0)value=record.name;else if(['email','phone','company','message'].includes(key))value=record[key];else if(/status|stage|type/.test(key))value=record.status;else if(/date/.test(key))value=record.details['Due date']||new Date(record.createdAt).toLocaleDateString();else if(/owner|assignee/.test(key))value=record.owner===user.id?user.name:'Assigned';row.insertCell().textContent=value||'-'});
         if(privileged){const button=document.createElement('button');button.className='b';button.textContent='Assign';button.onclick=()=>assign(record,render);row.insertCell().append(button)}row.cells[1].style.cursor='pointer';row.cells[1].onclick=()=>{sessionStorage.setItem('flowdesk-record',record.id);location.href='/html/record.html'};
       });
       view.querySelector('#backend-empty')?.remove();if(!records.length){const p=document.createElement('p');p.id='backend-empty';p.className='mu';p.textContent='No records assigned to this view.';table.parentElement.after(p)}
+      table.dataset.recordsState='ready';table.setAttribute('aria-busy','false');loading?.remove();
     };
     await render();
     if(page==='Support Tickets'){
@@ -108,4 +118,4 @@ window.FlowDeskReady = (async () => {
     teamForm.onsubmit=async e=>{e.preventDefault();try{await request('/api/teams','POST',{name:teamForm.elements.name.value});teamForm.reset();await render();notice('Team created')}catch(error){notice(error.message)}};
     await render();
   }
-})().catch(error=>{if(typeof notify==='function')notify(error.message);console.error(error)});
+})().catch(error=>{const status=document.querySelector('#backend-list-status');if(status){status.textContent='Unable to load records. '+error.message;document.querySelector('#v table')?.setAttribute('aria-busy','false')}if(typeof notify==='function')notify(error.message);console.error(error)});

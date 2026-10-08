@@ -3,6 +3,7 @@ from datetime import timedelta
 
 from django.core.management.base import BaseCommand, CommandError
 from django.db import transaction
+from django.db.models import Q
 from django.utils import timezone
 
 from crm.models import Record, Team, User
@@ -11,11 +12,18 @@ from crm.models import Record, Team, User
 class Command(BaseCommand):
     help = 'Add fictional Indian CRM demo records without replacing existing data.'
 
+    def add_arguments(self, parser):
+        parser.add_argument('--owner-email', help='Existing active Super Admin email for demo ownership.')
+
     @transaction.atomic
     def handle(self, *args, **options):
-        owner = User.objects.filter(email__iexact='kr.praveengope@gmail.com').first()
+        admins = User.objects.filter(is_active=True).filter(Q(role='super_admin') | Q(is_superuser=True))
+        if options.get('owner_email'):
+            owner = admins.filter(email__iexact=options['owner_email']).first()
+        else:
+            owner = admins.filter(email__iexact='kr.praveengope@gmail.com').first() or admins.order_by('pk').first()
         if not owner:
-            raise CommandError('Run bootstrap first to create the local administrator.')
+            raise CommandError('Create an active Super Admin first, or specify its email with --owner-email.')
         team, _ = Team.objects.get_or_create(name='Sales Team')
         members = list(User.objects.filter(teams=team, is_active=True))
         support = list(User.objects.filter(role='support', is_active=True))
