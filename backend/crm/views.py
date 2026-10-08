@@ -364,7 +364,32 @@ def user_detail(request, user_id):
             validate_user_teams(request.user, teams)
         except PermissionError as error:
             return JsonResponse({'error': str(error)}, status=403)
+    name = data.get('name', target.get_full_name() or target.username)
+    if not isinstance(name, str) or not name.strip() or len(name.strip()) > 150:
+        raise ValueError('A name of up to 150 characters is required.')
+    email = data.get('email', target.email)
+    if not isinstance(email, str) or len(email) > 254:
+        raise ValueError('Invalid email.')
+    email = email.strip().lower()
+    validate_email(email)
+    if User.objects.exclude(pk=target.pk).filter(Q(email__iexact=email) | Q(username=email)).exists():
+        raise ValueError('Email is already registered.')
+    password = data.get('password')
+    if password is not None:
+        if not isinstance(password, str) or len(password) < 12 or len(password) > 128:
+            raise ValueError('Use a password of 12 to 128 characters.')
+        candidate = User(username=email, email=email, first_name=name.strip())
+        validate_password(password, candidate)
     with transaction.atomic():
+        target.first_name = name.strip()
+        target.last_name = ''
+        if 'email' in data:
+            target.email = email
+            target.username = email
+        if password is not None:
+            target.set_password(password)
+        if 'role' in data and target.is_superuser:
+            target.is_superuser = role == User.Role.SUPER
         target.role = role
         target.is_active = data.get('active', target.is_active)
         target.save()
