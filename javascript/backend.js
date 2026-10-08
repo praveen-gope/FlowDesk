@@ -90,9 +90,9 @@ window.FlowDeskReady = (async () => {
     if(!table){table=document.createElement('table');const wrap=document.createElement('div');wrap.className='card tw';wrap.append(table);view.append(wrap);table.innerHTML='<thead><tr><th></th><th>Name</th><th>Message</th><th>Status</th></tr></thead><tbody></tbody>'}
     if(loading&&!loading.isConnected)table.parentElement.after(loading);
     const render=async()=>{
-      const {records}=await request('/api/records/'+kind);const headers=[...table.querySelectorAll('th')].slice(1).map(th=>th.textContent.trim());table.querySelectorAll('tr').forEach((r,i)=>{if(i)r.remove()});
-      records.forEach(record=>{const row=table.insertRow();const details=Object.fromEntries(Object.entries(record.details).map(([key,value])=>[key.toLowerCase(),value]));row.insertCell().innerHTML='<input type="checkbox" aria-label="Select record">';headers.forEach((label,i)=>{const key=label.toLowerCase();let value=details[key]||'';if(i===0)value=record.name;else if(['email','phone','company','message'].includes(key))value=record[key];else if(/status|stage|type/.test(key))value=record.status;else if(/date/.test(key))value=record.details['Due date']||new Date(record.createdAt).toLocaleDateString();else if(/owner|assignee/.test(key))value=record.owner===user.id?user.name:'Assigned';row.insertCell().textContent=value||'-'});
-        if(privileged){const button=document.createElement('button');button.className='b';button.textContent='Assign';button.onclick=()=>assign(record,render);row.insertCell().append(button)}row.cells[1].style.cursor='pointer';row.cells[1].onclick=()=>{sessionStorage.setItem('flowdesk-record',record.id);location.href='/html/record.html'};
+      const {records}=await request('/api/records/'+kind);const headers=[...table.querySelectorAll('th')].slice(1).map(th=>th.textContent.trim());const template=table.querySelector('tr:has(td)')?.cloneNode(true);table.querySelectorAll('tr').forEach((r,i)=>{if(i)r.remove()});
+      records.forEach(record=>{const row=template?template.cloneNode(true):document.createElement('tr');while(row.cells.length>headers.length+1)row.deleteCell(-1);while(row.cells.length<headers.length+1)row.insertCell();table.tBodies[0].append(row);const details=Object.fromEntries(Object.entries(record.details).map(([key,value])=>[key.toLowerCase(),value]));row.cells[0].innerHTML='<input type="checkbox" aria-label="Select record">';headers.forEach((label,i)=>{const key=label.toLowerCase();let value=details[key]||'';if(i===0)value=record.name;else if(['email','phone','company','message'].includes(key))value=record[key];else if(/status|stage|type/.test(key))value=record.status;else if(/date/.test(key))value=record.details['Due date']||new Date(record.createdAt).toLocaleDateString();else if(/owner|assignee/.test(key))value=record.owner===user.id?user.name:'Assigned';const cell=row.cells[i+1];cell.replaceChildren();if(/status|stage|type/.test(key)){const badge=document.createElement('span');badge.className='pl';badge.style.setProperty('--c',col[value]||'#7FA6B8');badge.textContent=value||'-';cell.append(badge)}else if(i===0||/owner|assignee/.test(key)){if(cell.querySelector('.av'))cell.replaceChildren();const name=document.createElement(i===0?'b':'span');name.textContent=value||'-';cell.append(name)}else cell.textContent=value||'-'});
+        if(privileged){const button=document.createElement('button');button.className='b';button.textContent='Assign';button.onclick=()=>assign(record,render);row.insertCell().append(button)}row.cells[1].style.cursor='pointer';row.cells[1].tabIndex=0;const open=()=>{sessionStorage.setItem('flowdesk-record',record.id);location.href='/html/'+({contact:'edit-contact',company:'company-detail',deal:'deal-detail',product:'product-detail'}[kind]||'record')+'.html'};row.cells[1].onclick=open;row.cells[1].onkeydown=e=>{if(e.key==='Enter')open()};
       });
       view.querySelector('#backend-empty')?.remove();if(!records.length){const p=document.createElement('p');p.id='backend-empty';p.className='mu';p.textContent='No records assigned to this view.';table.parentElement.after(p)}
       table.dataset.recordsState='ready';table.setAttribute('aria-busy','false');loading?.remove();
@@ -122,10 +122,26 @@ window.FlowDeskReady = (async () => {
     rc();
   }
   if(['Sign up','Forgot password','OTP verification','New password'].includes(page)){
-    view.replaceChildren();const message=document.createElement('p');message.textContent='Contact your administrator for account creation and password assistance.';view.append(message);
+    view.querySelectorAll('button,input').forEach(control=>control.disabled=true);const message=document.createElement('p');message.textContent='Contact your administrator for account creation and password assistance.';view.append(message);
   }
   if(page==='Profile'){const inputs=view.querySelectorAll('input');inputs[0].value=user.name;inputs[1].value='';inputs[2].value=user.email;view.querySelector('button').onclick=()=>notice('Account details are managed by your administrator.')}
-  if(['Company detail','Deal detail','Product detail','Edit contact'].includes(page))location.replace('/html/record.html');
+  if(['Company detail','Deal detail','Product detail','Edit contact'].includes(page)){
+    const id=sessionStorage.getItem('flowdesk-record');
+    if(!id){view.querySelectorAll('button,input').forEach(control=>control.disabled=true);notice('Choose a record from its list to load customer details.')}
+    else{
+      const {record}=await request('/api/record/'+id);
+      const expected={'Company detail':'company','Deal detail':'deal','Product detail':'product','Edit contact':'contact'}[page];
+      if(record.kind!==expected){view.querySelectorAll('button,input').forEach(control=>control.disabled=true);notice('Choose the matching record from its list.')}
+      else{
+        const values={'Full name':record.name,Email:record.email,Phone:record.phone,Company:record.company,Status:record.status,Stage:record.status,Owner:record.owner===user.id?user.name:'Assigned',...record.details};
+        const heading=view.querySelector('h2');if(heading)heading.textContent=record.name;
+        view.querySelectorAll('small').forEach(label=>{const value=label.parentElement.querySelector('b');if(value)value.textContent=values[label.textContent.trim()]||'-'});
+        const badge=view.querySelector('.pl');if(badge){badge.textContent=record.status;badge.style.setProperty('--c',col[record.status]||'#7FA6B8')}
+        view.querySelectorAll('input').forEach(input=>{const label=input.previousElementSibling?.textContent.trim();input.value=values[label]||'';if(label==='Owner')input.disabled=true});
+        if(page==='Edit contact')view.querySelector('button').onclick=async()=>{const data={details:{...record.details}};view.querySelectorAll('input').forEach(input=>{const label=input.previousElementSibling?.textContent.trim();const key={'Full name':'name',Email:'email',Phone:'phone',Status:'status'}[label];if(key)data[key]=input.value;else if(label!=='Owner')data.details[label]=input.value});try{await request('/api/record/'+id,'PATCH',data);notice('Contact saved')}catch(error){notice(error.message)}};
+      }
+    }
+  }
   if(page==='Import CSV')view.querySelector('button').onclick=()=>notice('Bulk import is not connected to Django yet. Use the record forms or capture API.');
   if(['Settings','Integrations','Explore integrations'].includes(page)&&user.role!=='super_admin'){view.replaceChildren();const p=document.createElement('p');p.textContent='System configuration requires Super Admin access.';view.append(p)}
   if(page==='Users & Teams'){
