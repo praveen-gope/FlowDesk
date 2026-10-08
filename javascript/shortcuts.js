@@ -63,11 +63,11 @@ export function installShortcuts({request, user}) {
     }catch(error){if(current===version)status(error.message)}
   }
   const actions=element('div',undefined,'shortcut-actions');
-  [['customers','Find customer','Ctrl+K'],['tasks','Tasks','Ctrl+T'],['reports','Reports','Ctrl+R']].forEach(([mode,label,key])=>{const control=button(label,()=>open(mode));control.title=key;control.setAttribute('aria-keyshortcuts',key.replace('Ctrl','Control'));actions.append(control)});
+  [['customers','Find customer','Ctrl+K'],['tasks','Tasks','Ctrl+P'],['reports','Reports','Ctrl+R']].forEach(([mode,label,key])=>{const control=button(label,()=>open(mode));control.title=key;control.setAttribute('aria-keyshortcuts',key.replace('Ctrl','Control'));actions.append(control)});
   document.querySelector('header').after(actions);
   document.addEventListener('keydown',event=>{
     if(!event.ctrlKey||event.altKey||event.shiftKey||event.metaKey||event.repeat)return;
-    const mode={k:'customers',t:'tasks',r:'reports'}[event.key.toLowerCase()];
+    const mode={k:'customers',p:'tasks',r:'reports'}[event.key.toLowerCase()];
     if(mode){event.preventDefault();open(mode)}
   },true);
 }
