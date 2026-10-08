@@ -2,7 +2,7 @@
 window.FlowDeskReady = (async () => {
   const listPages=['Contacts','Companies','Deals','Tasks','Products','Invoices','Emails','Notifications','Support Notes','Documents','Support Tickets'];
   let loading;
-  if(location.protocol==='file:'){document.querySelectorAll('table').forEach(table=>table.dataset.recordsState='ready');return}
+  if(location.protocol==='file:'){document.body.dataset.crmReady='true';document.querySelectorAll('table').forEach(table=>table.dataset.recordsState='ready');return}
   if(listPages.includes(document.body.dataset.page)){
     loading=document.createElement('p');loading.id='backend-list-status';loading.className='mu';loading.setAttribute('role','status');loading.textContent='Loading records...';
     const table=document.querySelector('#v table');
@@ -74,10 +74,20 @@ window.FlowDeskReady = (async () => {
     const data={name:inputs[0].value,details:{}};inputs.forEach(i=>{const label=i.previousElementSibling?.textContent.trim()||'';if(label==='Email')data.email=i.value;else if(label==='Phone')data.phone=i.value;else if(label==='Company')data.company=i.value;else if(label==='Message')data.message=i.value;else if(label==='Status'||label==='Stage')data.status=i.value||'New';else data.details[label]=i.value});
     try{await request('/api/records/'+formKind,'POST',data);location.href='/html/'+({contact:'contacts',company:'companies',deal:'deals',task:'tasks',product:'products',note:'support-notes',document:'documents'}[formKind])+'.html'}catch(error){notice(error.message)}
   }}
-  const kind=kinds[page];
+  if(page==='Emails'){
+    const {records}=await request('/api/records/communication');
+    const panels=view.querySelectorAll('.g2>.card'),list=panels[0],detail=panels[1];
+    if(list&&detail){
+      list.replaceChildren();
+      records.forEach(record=>{const item=document.createElement('button');item.className='mail email-record';item.type='button';item.textContent=record.name;item.onclick=()=>{detail.replaceChildren();detail.style.paddingTop='20px';detail.style.textAlign='left';const title=document.createElement('h3');title.textContent=record.name;const from=document.createElement('p');from.className='mu';from.textContent=record.email||record.company;const message=document.createElement('p');message.textContent=record.message;message.style.whiteSpace='pre-wrap';detail.append(title,from,message)};list.append(item)});
+      if(!records.length){const empty=document.createElement('p');empty.className='mu';empty.textContent='No communications assigned to this view.';list.append(empty)}
+      loading?.remove();
+    }
+  }
+  const kind=page==='Emails'?null:kinds[page];
   if(kind){
     let table=view.querySelector('table');
-    if(!table){view.replaceChildren();table=document.createElement('table');const wrap=document.createElement('div');wrap.className='card tw';wrap.append(table);view.append(wrap);table.innerHTML='<thead><tr><th></th><th>Name</th><th>Message</th><th>Status</th></tr></thead><tbody></tbody>'}
+    if(!table){table=document.createElement('table');const wrap=document.createElement('div');wrap.className='card tw';wrap.append(table);view.append(wrap);table.innerHTML='<thead><tr><th></th><th>Name</th><th>Message</th><th>Status</th></tr></thead><tbody></tbody>'}
     if(loading&&!loading.isConnected)table.parentElement.after(loading);
     const render=async()=>{
       const {records}=await request('/api/records/'+kind);const headers=[...table.querySelectorAll('th')].slice(1).map(th=>th.textContent.trim());table.querySelectorAll('tr').forEach((r,i)=>{if(i)r.remove()});
@@ -101,13 +111,15 @@ window.FlowDeskReady = (async () => {
     form.onsubmit=async e=>{e.preventDefault();try{await request('/api/record/'+id,'PATCH',Object.fromEntries(new FormData(form)));notice('Record saved')}catch(error){notice(error.message)}};
   }
   if(['Dashboard','Reports'].includes(page)){
-    const {counts}=await request('/api/reports');const cards=[...view.querySelectorAll('.g3>.card,.g4>.card')].slice(0,3);['lead','deal','task'].forEach((k,i)=>{const card=cards[i];if(card){card.querySelector('.mu').textContent={lead:'Visible leads',deal:'Visible deals',task:'Visible tasks'}[k];card.querySelector('.big').textContent=counts[k];card.querySelectorAll('svg,.pl').forEach(el=>el.remove())}});
-    if(page==='Dashboard'){view.querySelector('table')?.parentElement.remove();const title=[...view.querySelectorAll('h3')].find(h=>h.textContent==='Table data sales');if(title)title.parentElement.remove()}
+    const {counts}=await request('/api/reports');
+    const summary=document.createElement('div');summary.className='crm-count-summary';
+    ['lead','deal','task'].forEach(kind=>{const item=document.createElement('span');item.textContent={lead:'Visible leads',deal:'Visible deals',task:'Visible tasks'}[kind]+': '+counts[kind];summary.append(item)});
+    view.prepend(summary);
   }
   if(page==='Calendar'){
-    const {records}=await request('/api/records/task');view.replaceChildren();const title=document.createElement('h2');title.textContent='Scheduled tasks';view.append(title);
-    records.forEach(record=>{const item=document.createElement('div');item.className='mail';const name=document.createElement('b');name.textContent=record.name;const date=document.createElement('p');date.className='mu';date.textContent=record.details['Due date']||'No due date';item.append(name,date);view.append(item)});
-    if(!records.length){const empty=document.createElement('p');empty.className='mu';empty.textContent='No scheduled tasks in your record scope.';view.append(empty)}
+    const {records}=await request('/api/records/task');
+    CE=records.filter(record=>/^\d{4}-\d{2}-\d{2}$/.test(record.details['Due date']||'')).map(record=>({id:record.id,t:record.name,ty:'Task',d:record.details['Due date'],o:record.owner===user.id?user.name:'Assigned'}));
+    rc();
   }
   if(['Sign up','Forgot password','OTP verification','New password'].includes(page)){
     view.replaceChildren();const message=document.createElement('p');message.textContent='Contact your administrator for account creation and password assistance.';view.append(message);
@@ -127,4 +139,4 @@ window.FlowDeskReady = (async () => {
     teamForm.onsubmit=async e=>{e.preventDefault();try{await request('/api/teams','POST',{name:teamForm.elements.name.value});teamForm.reset();await render();notice('Team created')}catch(error){notice(error.message)}};
     await render();
   }
-})().catch(error=>{const status=document.querySelector('#backend-list-status');if(status){status.textContent='Unable to load records. '+error.message;document.querySelector('#v table')?.setAttribute('aria-busy','false')}if(typeof notify==='function')notify(error.message);console.error(error)});
+})().catch(error=>{const status=document.querySelector('#backend-list-status');if(status){status.textContent='Unable to load records. '+error.message;document.querySelector('#v table')?.setAttribute('aria-busy','false')}if(typeof notify==='function')notify(error.message);console.error(error)}).finally(()=>{document.body.dataset.crmReady='true'});
