@@ -2,6 +2,7 @@ from django.urls import path
 from crm import views
 
 urlpatterns = [
+    path('api/demo/load', views.load_demo),
     path('api/auth/session', views.session),
     path('api/auth/login', views.sign_in),
     path('api/auth/logout', views.sign_out),

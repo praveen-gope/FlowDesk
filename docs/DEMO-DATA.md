@@ -1,5 +1,12 @@
 # Local demo data
 
+On Django/cPanel, a Super Admin can select **Add demo data** in the CRM toolbar
+and confirm. This stores demo rows in the same database as added records, so
+both appear together after refresh. Loading again does not create duplicates
+or replace real records. Other users see only records permitted by their role
+and assignments. This action is for test workspaces and is not supported by
+the separate Netlify backend.
+
 From the FlowDesk project directory, run:
 
 ```powershell

@@ -58,6 +58,15 @@ window.FlowDeskReady = (async () => {
   window.FlowDesk={request,user,assign};
   const {installShortcuts}=await import('/javascript/shortcuts.js');
   installShortcuts(window.FlowDesk);
+  if(user.role==='super_admin'&&session.backend!=='netlify'){
+    const demo=document.createElement('button');demo.className='b';demo.textContent='Add demo data';
+    demo.onclick=async()=>{
+      if(!confirm('Add fictional demo records alongside existing records? Existing records will not be replaced. Use this only for testing.'))return;
+      demo.disabled=true;
+      try{await request('/api/demo/load','POST',{confirm:true});location.reload()}catch(error){notice(error.message);demo.disabled=false}
+    };
+    document.querySelector('.shortcut-actions').append(demo);
+  }
   const kinds={Contacts:'contact',Companies:'company',Deals:'deal',Tasks:'task',Products:'product',Invoices:'invoice',Emails:'communication',Notifications:'communication','Support Notes':'note',Documents:'document','Support Tickets':'ticket'};
   const formKind={'Add contact':'contact','Add company':'company','Add deal':'deal','Add task':'task','Add product':'product','Add support note':'note','Add document':'document'}[page];
   if(formKind){view.querySelector('button').onclick=async()=>{

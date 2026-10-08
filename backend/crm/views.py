@@ -1,10 +1,12 @@
 import json
+from io import StringIO
 from functools import wraps
 from pathlib import Path
 from django.conf import settings
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.password_validation import validate_password
 from django.core.cache import cache
+from django.core.management import call_command
 from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
 from django.db import transaction
@@ -251,6 +253,19 @@ def leads(request):
 def reports(request):
     rows = visible_records(request.user)
     return JsonResponse({'counts': {kind: rows.filter(kind=kind).count() for kind in Record.Kind.values}})
+
+
+@api(['POST'], roles=['super_admin'])
+def load_demo(request):
+    if payload(request).get('confirm') is not True:
+        raise ValueError('Confirm adding fictional demo records.')
+    with transaction.atomic():
+        # Serialize repeated loads so the same stable IDs are only inserted once.
+        User.objects.select_for_update().get(pk=request.user.pk)
+        output = StringIO()
+        call_command('seed_demo', owner_email=request.user.email, stdout=output)
+        AuditEvent.objects.create(actor=request.user, action='demo.loaded', target='indian-demo-v1')
+    return JsonResponse({'message': output.getvalue().strip()})
 
 
 CREATABLE_ROLES = {
