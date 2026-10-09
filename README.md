@@ -18,6 +18,7 @@ Node.js is required for the preview launcher. Open http://127.0.0.1:3000 after t
 
 ## Documentation
 
+- [Django/cPanel security controls and rollout](docs/SECURITY.md)
 - [cPanel Django and Passenger deployment](docs/CPANEL-DEPLOYMENT.md)
 - [Netlify Identity, Functions and PostgreSQL deployment](docs/NETLIFY-DEPLOYMENT.md)
 

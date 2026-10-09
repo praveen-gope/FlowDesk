@@ -8,6 +8,12 @@ class Team(models.Model):
     name = models.CharField(max_length=120, unique=True)
 
 
+class SecurityRateLimit(models.Model):
+    key = models.CharField(max_length=64, primary_key=True)
+    count = models.PositiveIntegerField(default=0)
+    expires_at = models.DateTimeField(db_index=True)
+
+
 class User(AbstractUser):
     class Role(models.TextChoices):
         SUPER = 'super_admin', 'Super Admin'

@@ -1,21 +1,24 @@
 import json
+import hashlib
+import time
+from datetime import timedelta
 from io import StringIO
 from functools import wraps
 from pathlib import Path
 from django.conf import settings
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.password_validation import validate_password
-from django.core.cache import cache
 from django.core.management import call_command
 from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
 from django.db import transaction
-from django.db.models import Q
+from django.db.models import Q, F
+from django.utils import timezone
 from django.http import JsonResponse, FileResponse, HttpResponse
 from django.middleware.csrf import get_token
 from django.template import Engine, Context
 from django.views.decorators.csrf import csrf_exempt
-from .models import User, Team, Record, AuditEvent, visible_records
+from .models import User, Team, Record, AuditEvent, SecurityRateLimit, visible_records
 
 
 def api(methods, roles=None, public=False):
@@ -62,10 +65,12 @@ def record_json(record):
 
 
 def throttle(request, key, maximum=20):
-    key = f'{key}:{request.META.get("REMOTE_ADDR", "unknown")}'
-    count = cache.get(key, 0)
-    cache.set(key, count + 1, 60)
-    return count >= maximum
+    now = timezone.now()
+    bucket = int(now.timestamp()) // 60
+    identifier = hashlib.sha256(f'{key}:{request.META.get("REMOTE_ADDR", "unknown")}:{bucket}'.encode()).hexdigest()
+    SecurityRateLimit.objects.get_or_create(key=identifier, defaults={'expires_at': now + timedelta(minutes=2)})
+    allowed = SecurityRateLimit.objects.filter(key=identifier, count__lt=maximum).update(count=F('count') + 1)
+    return not allowed
 
 
 @api(['GET'], public=True)
@@ -86,11 +91,16 @@ def sign_in(request):
     if not user:
         return JsonResponse({'error': 'Invalid email or password.'}, status=401)
     login(request, user)
+    request.session['security_started'] = int(time.time())
+    request.session['security_last'] = int(time.time())
+    request.session.set_expiry(settings.SESSION_IDLE_TIMEOUT)
+    AuditEvent.objects.create(actor=user, action='auth.login', target=str(user.pk))
     return JsonResponse({'user': user_json(user), 'csrfToken': get_token(request)})
 
 
 @api(['POST'])
 def sign_out(request):
+    AuditEvent.objects.create(actor=request.user, action='auth.logout', target=str(request.user.pk))
     logout(request)
     return JsonResponse({'ok': True})
 
@@ -462,7 +472,7 @@ def frontend(request, asset='index.html'):
     if request.method not in ['GET', 'HEAD']:
         return HttpResponse(status=405)
     relative = Path(asset)
-    if relative.suffix not in ['.html', '.css', '.js'] or '..' in relative.parts or relative.parts[0] in ['backend', 'server']:
+    if relative.suffix not in ['.html', '.css', '.js'] or '..' in relative.parts or (asset != 'index.html' and relative.parts[0] not in ['html', 'css', 'javascript']):
         return HttpResponse(status=404)
     file = (settings.FRONTEND_DIR / relative).resolve()
     if not file.is_relative_to(settings.FRONTEND_DIR.resolve()) or not file.is_file():
